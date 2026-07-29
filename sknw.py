@@ -1,3 +1,10 @@
+"""
+sknw - Skeleton to NetworkX Graph Converter
+Original Author: Yahui Liu (https://github.com/yxdragon/sknw)
+License: BSD / MIT
+Vendored utility module for constructing graph networks from 2D/3D binary skeletons.
+"""
+
 import numpy as np
 from numba import jit
 import networkx as nx
