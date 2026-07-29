@@ -12,7 +12,8 @@ It is designed for evaluation on the **Fundus-AVSeg** dataset.
 
 - [Dataset](#dataset)
 - [Annotation Scheme](#annotation-scheme)
-- [Morphological Techniques](#morphological-techniques)
+- [Morphological Approaches & Comparison](#morphological-approaches--comparison)
+- [Structural Analysis & Graph Network](#structural-analysis--graph-network)
 - [Project Structure](#project-structure)
 - [Installation & Setup](#installation--setup)
 - [Usage](#usage)
@@ -55,24 +56,39 @@ Fundus-AVSeg provides pixel-wise manual annotations color-coded as follows:
 
 For general binary vessel segmentation evaluation, any non-black pixel is converted to a binary vessel mask (`vessel = True`).
 
+![Dataset Overview](assets/dataset_overview.png)
+*Figure 1: Sample color fundus image (035_A.png), Fundus-AVSeg multi-color ground truth annotation, and converted binary vessel mask.*
+
 ---
 
-## Morphological Techniques
+## Morphological Approaches & Comparison
 
 1. **Green Channel Extraction**: Retinal fundus images are converted to green channel images, which yield optimal vessel-to-background contrast.
 2. **Method 1 - Local Adaptive Thresholding**:
-   - Gaussian local adaptive thresholding (block size = 125).
-   - Morphological opening with octagonal structuring elements (size = 3x3).
-   - Small object removal (connectivity = 1, minimum area = 1500 px).
+   - Gaussian local adaptive thresholding (`block_size = 125`).
+   - Morphological opening with octagonal structuring elements (`size = 3x3`).
+   - Small object removal (`connectivity = 1`, `min_size = 1500 px`).
 3. **Method 2 - Frangi Vesselness Filter**:
-   - Multi-scale Hessian-based Frangi filter (`sigmas=(0.5, 5)`, `alpha=10`, `beta=15`).
+   - Multi-scale Hessian-based Frangi filter (`sigmas=(1, 4)`, `alpha=0.5`, `beta=0.5`).
    - Mean thresholding.
-   - Morphological opening with disk structuring elements (radius = 3).
-   - Morphological closing with octagonal structuring elements (size = 4x4).
-4. **Quantitative Analysis**:
-   - Thinning / Skeletonization (`skimage.morphology.thin`).
-   - Distance Transform (`scipy.ndimage.distance_transform_edt`) for vessel length and width calculation.
-   - Network Graph Construction (`sknw`) for branch length and polar rose orientation analysis.
+   - Morphological opening with disk structuring elements (`radius = 3`).
+   - Morphological closing with octagonal structuring elements (`size = 4x4`).
+
+![Segmentation Comparison](assets/segmentation_comparison.png)
+*Figure 2: Pipeline step-by-step visual comparison on sample image 035_A.png showing original image, green channel, ground truth, Local Adaptive Thresholding (Method 1), and Frangi Filter (Method 2).*
+
+---
+
+## Structural Analysis & Graph Network
+
+In addition to binary vessel segmentation, the framework performs topological and morphological structure analysis:
+- **Thinning / Skeletonization** (`skimage.morphology.thin`).
+- **Distance Transform** (`scipy.ndimage.distance_transform_edt`) to calculate total vessel length and length of vessels wider than $15\text{px}$ and $40\text{px}$.
+- **Network Graph Construction** (`sknw`) to convert skeleton structures into NetworkX graphs, extracting nodes, branch segments, lengths, and orientations.
+- **Polar Rose Direction Plot**: Angular orientation distribution of vessel branches across 8 cardinal directions.
+
+![Structural Analysis](assets/structural_analysis.png)
+*Figure 3: Vessel skeleton network graph overlay (green=branches, red=nodes) and branch orientation polar rose plot.*
 
 ---
 
@@ -86,6 +102,10 @@ Blood-Vessel-Extraction/
 ├── vessel_extraction.py          # Modular Python pipeline & CLI
 ├── sknw.py                       # Vendored skeleton-to-graph library
 ├── vessel_segmentation.ipynb     # Interactive inspection & evaluation notebook
+├── assets/                       # Tracked figures for README visualization
+│   ├── dataset_overview.png
+│   ├── segmentation_comparison.png
+│   └── structural_analysis.png
 ├── data/
 │   ├── training.txt              # Train split file list (80 images)
 │   ├── testing.txt               # Test split file list (20 images)
