@@ -1,4 +1,4 @@
-# Blood Vessel Extraction
+# Retinal Vascular Morphology
 
 A Python framework for retinal blood vessel extraction, segmentation, and structural quantitative analysis from colour fundus images using classical morphological image processing techniques.
 
@@ -110,7 +110,7 @@ Evaluated across the 20 testing images from the Fundus-AVSeg dataset:
 ## Project Structure
 
 ```
-Blood-Vessel-Extraction/
+retinal-vascular-morphology/
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
@@ -139,8 +139,8 @@ Blood-Vessel-Extraction/
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/Robb-Chris/Blood-Vessel-Extraction.git
-   cd Blood-Vessel-Extraction
+   git clone https://github.com/Robb-Chris/retinal-vascular-morphology.git
+   cd retinal-vascular-morphology
    ```
 
 2. **Install dependencies**:

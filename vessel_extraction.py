@@ -1,6 +1,6 @@
 """
-Blood Vessel Extraction Pipeline
---------------------------------
+Retinal Vascular Morphology Pipeline
+------------------------------------
 Modernized processing module for retinal blood vessel segmentation & quantitative analysis
 using classical morphological techniques (Local Adaptive Thresholding, Frangi Vesselness Filter, and Ensemble Consensus).
 
